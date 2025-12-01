@@ -31,8 +31,8 @@ export default async function handler(req, res) {
       Amount,
       ReceiverParty,
       RecieverIdentifierType: "11",
-      ResultURL: "https://yourdomain.vercel.app/api/callback/generic",
-      QueueTimeOutURL: "https://yourdomain.vercel.app/api/callback/generic",
+      ResultURL: "https://www.geniusapps.click/api/callback/generic",
+      QueueTimeOutURL: "https://www.geniusapps.click/api/callback/generic",
       Remarks,
       Occasion: ""
     };
