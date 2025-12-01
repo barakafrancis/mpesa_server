@@ -4,7 +4,7 @@ export const config = {
   consumerSecret: process.env.CONSUMER_SECRET,
   shortcode: process.env.SHORTCODE,
   passkey: process.env.PASSKEY,
-  environment: process.env.ENVIRONMENT || "sandbox"
+  environment: process.env.ENVIRONMENT || "production"
 };
 
 export const baseURL = config.environment === "production"
