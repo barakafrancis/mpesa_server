@@ -37,8 +37,8 @@ export default async function handler(req, res) {
       PartyB,
       AccountReference,
       Remarks,
-      QueueTimeOutURL: process.env.B2B_TIMEOUT_URL || "https://yourdomain.vercel.app/api/callback/generic",
-      ResultURL: process.env.B2B_RESULT_URL || "https://yourdomain.vercel.app/api/callback/generic"
+      QueueTimeOutURL: process.env.B2B_TIMEOUT_URL || "https://www.geniusapps.click/api/callback/generic",
+      ResultURL: process.env.B2B_RESULT_URL || "https://www.geniusapps.click/api/callback/generic"
     };
 
     const { data } = await axios.post(`${baseURL}/mpesa/b2b/v1/paymentrequest`, payload, {
