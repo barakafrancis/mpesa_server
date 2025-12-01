@@ -23,7 +23,7 @@ export default async function handler(req, res) {
       PartyA: phone,
       PartyB: config.shortcode,
       PhoneNumber: phone,
-      CallBackURL: callbackUrl || process.env.STK_CALLBACK_URL || "https://yourdomain.vercel.app/api/callback/stk",
+      CallBackURL: callbackUrl || process.env.STK_CALLBACK_URL || "https://www.geniusapps.click/api/callback/stk",
       AccountReference: accountReference,
       TransactionDesc: transactionDesc
     };
