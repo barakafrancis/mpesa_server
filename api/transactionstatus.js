@@ -22,8 +22,8 @@ export default async function handler(req, res) {
       PartyA: config.shortcode,
       IdentifierType: "1",
       Remarks: "Status check",
-      QueueTimeOutURL: "https://yourdomain.vercel.app/api/callback/generic",
-      ResultURL: "https://yourdomain.vercel.app/api/callback/generic"
+      QueueTimeOutURL: "https://www.geniusapps.click/api/callback/generic",
+      ResultURL: "https://www.geniusapps.click/api/callback/generic"
     };
 
     const { data } = await axios.post(`${baseURL}/mpesa/transactionstatus/v1/query`, payload, {
