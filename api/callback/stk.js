@@ -25,6 +25,6 @@ export default async function handler(req, res) {
     res.json({ message: "OK" });
   } catch (err) {
     console.error(err);
-    res.status(200).send("OK"); // Always acknowledge Safaricom
+    res.status(200).send("OK"); 
   }
 }
