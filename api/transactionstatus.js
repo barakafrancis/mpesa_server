@@ -22,8 +22,8 @@ export default async function handler(req, res) {
       PartyA: config.shortcode,
       IdentifierType: "1",
       Remarks: "Status check",
-      QueueTimeOutURL: "https://www.geniusapps.click/api/callback/generic",
-      ResultURL: "https://www.geniusapps.click/api/callback/generic"
+      QueueTimeOutURL: "https://www.geniusapps.click/api/callback/stk.js",
+      ResultURL: "https://www.geniusapps.click/api/callback/stk.js"
     };
 
     const { data } = await axios.post(`${baseURL}/mpesa/transactionstatus/v1/query`, payload, {
