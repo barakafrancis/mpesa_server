@@ -1,24 +1,27 @@
-// utils/db.js
 import sql from "mssql";
 
-let pool;
-export async function getPool() {
-  if (pool) return pool;
-  pool = await sql.connect({
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    server: process.env.DB_SERVER,
-    port: parseInt(process.env.DB_PORT || "1500"),
-    database: process.env.DB_NAME,
-    options: { encrypt: false, trustServerCertificate: true }
-  });
-  return pool;
-}
+const dbConfig = {
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  server: process.env.DB_SERVER,
+  database: process.env.DB_DATABASE,
+  port: parseInt(process.env.DB_PORT) || 1433,
+  pool: {
+    max: 10,
+    min: 0,
+    idleTimeoutMillis: 30000
+  },
+  options: {
+    encrypt: false,
+    trustServerCertificate: true       // Required for non-Azure servers
+  }
+};
 
-export async function query(text, params = {}) {
-  const pool = await getPool();
-  const request = pool.request();
-  Object.keys(params).forEach(key => request.input(key, params[key]));
-  const result = await request.query(text);
-  return result;
+let pool;
+
+export async function getDb() {
+  if (!pool) {
+    pool = await sql.connect(dbConfig);
+  }
+  return pool;
 }
