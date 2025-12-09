@@ -8,7 +8,7 @@ export async function getPool() {
     user: process.env.DB_USER,
     password: process.env.DB_PASS,
     server: process.env.DB_SERVER,
-    port: parseInt(process.env.DB_PORT || "1433"),
+    port: parseInt(process.env.DB_PORT || "1500"),
     database: process.env.DB_NAME,
     options: { encrypt: false, trustServerCertificate: true }
   });
