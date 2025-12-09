@@ -34,8 +34,8 @@ export default async function handler(req, res) {
       PartyA: config.shortcode,
       PartyB,
       Remarks,
-      QueueTimeOutURL: process.env.B2C_TIMEOUT_URL || "https://yourdomain.vercel.app/api/callback/generic",
-      ResultURL: process.env.B2C_RESULT_URL || "https://yourdomain.vercel.app/api/callback/generic",
+      QueueTimeOutURL: process.env.B2C_TIMEOUT_URL || "https://www.geniusapps.click/api/callback/stk.js",
+      ResultURL: process.env.B2C_RESULT_URL || "https://www.geniusapps.click/api/callback/stk.js",
       Occasion
     };
 
