@@ -9,8 +9,8 @@ export default async function handler(req, res) {
   const payload = {
     ShortCode: process.env.SHORTCODE,
     ResponseType: "Completed",
-    ConfirmationURL: ConfirmationURL || "https://www.geniusapps.click/api/callback/generic",
-    ValidationURL: ValidationURL || "https://www.geniusapps.click/api/callback/generic"
+    ConfirmationURL: ConfirmationURL || "https://www.geniusapps.click/api/callback/stk.js",
+    ValidationURL: ValidationURL || "https://www.geniusapps.click/api/callback/stk.js"
   };
 
   try {
