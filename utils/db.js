@@ -1,0 +1,32 @@
+// db.js - MongoDB connection for Vercel
+
+import { MongoClient } from "mongodb";
+
+const uri = process.env.MONGODB_URI; // full connection string
+const options = {};
+
+let client;
+let clientPromise;
+
+if (!process.env.MONGODB_URI) {
+  throw new Error("❌ Missing MONGODB_URI in environment variables");
+}
+
+// Vercel serverless fix: reuse global connection
+if (process.env.NODE_ENV === "development") {
+  if (!global._mongoClientPromise) {
+    client = new MongoClient(uri, options);
+    global._mongoClientPromise = client.connect();
+  }
+  clientPromise = global._mongoClientPromise;
+} else {
+  client = new MongoClient(uri, options);
+  clientPromise = client.connect();
+}
+
+export async function getDb() {
+  const client = await clientPromise;
+  return client.db(process.env.MONGODB_DBNAME); // db name from env
+}
+
+export default clientPromise;
