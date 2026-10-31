@@ -1,7 +1,7 @@
 // api/start_stk.js
 import { safPost, timestamp, stkPassword } from "../utils/mpesa.js";
 import { config } from "../utils/config.js";
-import { getDb } from "../utils/db.js";
+import { query } from "../utils/db.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST")
@@ -50,21 +50,16 @@ export default async function handler(req, res) {
     const checkout = response.CheckoutRequestID;
     const merchant = response.MerchantRequestID;
 
-    // --- 3. Save to MongoDB ---
+    // --- 3. Save to MySQL ---
     try {
-      const db = await getDb();
-      const collection = db.collection("mpesatransactions");
-
-      await collection.insertOne({
-        checkoutrequestid: checkout,
-        merchantrequestid: merchant,
-        phone,
-        amount: Number(amount),
-        status: "PENDING",
-        created_at: new Date()
-      });
+      await query(
+        `INSERT INTO mpesatransactions
+          (checkoutrequestid, merchantrequestid, phone, amount, status)
+         VALUES (?, ?, ?, ?, 'PENDING')`,
+        [checkout, merchant, String(phone), Number(amount)]
+      );
     } catch (err) {
-      console.log("⚠️ MongoDB insert failed (non-critical)", err.message);
+      console.log("⚠️ MySQL insert failed (non-critical)", err.message);
     }
 
     // --- 4. Return M-Pesa Response ---
