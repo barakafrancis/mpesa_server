@@ -9,7 +9,6 @@ export default async function handler(req, res) {
 
     const cb = req.body;
 
-    // Normalize Safaricom callback format
     const stk = cb?.Body?.stkCallback || cb;
 
     const checkoutID = stk?.CheckoutRequestID ?? null;
