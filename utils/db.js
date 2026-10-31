@@ -1,32 +1,49 @@
-// db.js - MongoDB connection for Vercel
+// utils/db.js - MySQL connection (mysql2) for Vercel serverless
+import mysql from "mysql2/promise";
 
-import { MongoClient } from "mongodb";
+let pool;
 
-const uri = process.env.MONGODB_URI; // full connection string
-const options = {};
+function buildConfig() {
+  const ssl =
+    process.env.DB_SSL === "true" ? { rejectUnauthorized: false } : undefined;
 
-let client;
-let clientPromise;
-
-if (!process.env.MONGODB_URI) {
-  throw new Error("❌ Missing MONGODB_URI in environment variables");
-}
-
-// Vercel serverless fix: reuse global connection
-if (process.env.NODE_ENV === "development") {
-  if (!global._mongoClientPromise) {
-    client = new MongoClient(uri, options);
-    global._mongoClientPromise = client.connect();
+  // Option 1: a single Service URI, e.g. mysql://user:pass@host:port/dbname
+  if (process.env.DB_URI) {
+    return {
+      uri: process.env.DB_URI,
+      ssl,
+      waitForConnections: true,
+      connectionLimit: 5,
+      enableKeepAlive: true
+    };
   }
-  clientPromise = global._mongoClientPromise;
-} else {
-  client = new MongoClient(uri, options);
-  clientPromise = client.connect();
+
+  // Option 2: separate values
+  return {
+    host: process.env.DB_HOST,
+    port: parseInt(process.env.DB_PORT) || 3306,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    ssl,
+    waitForConnections: true,
+    connectionLimit: 5,
+    enableKeepAlive: true
+  };
 }
 
-export async function getDb() {
-  const client = await clientPromise;
-  return client.db(process.env.MONGODB_DBNAME); // db name from env
+export function getDb() {
+  if (!pool) {
+    if (!process.env.DB_URI && !process.env.DB_HOST) {
+      throw new Error("Missing DB_URI or DB_HOST in environment variables");
+    }
+    pool = mysql.createPool(buildConfig());
+  }
+  return pool;
 }
 
-export default clientPromise;
+// Helper: const rows = await query("SELECT ... WHERE id = ?", [id]);
+export async function query(sql, params = []) {
+  const [rows] = await getDb().execute(sql, params);
+  return rows;
+}
