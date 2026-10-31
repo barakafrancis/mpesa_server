@@ -11,26 +11,16 @@ export default async function handler(req, res) {
     const code = stk.ResultCode;
     const status = code === 0 ? "SUCCESS" : "FAILED";
 
-    // Connect to DB
-    const db = await getDb();
-    const collection = db.collection("mpesatransactions");
-
     // Update record by checkoutrequestid
-    const result = await collection.updateOne(
-      { checkoutrequestid: checkoutID },
-      {
-        $set: {
-          status: status,
-          resultcode: code,
-          resultdesc: stk.ResultDesc || "",
-          callback_payload: cb,
-          updated_at: new Date()
-        }
-      }
+    const [result] = await getDb().execute(
+      `UPDATE mpesatransactions
+          SET status = ?, resultcode = ?, resultdesc = ?, callback_payload = ?
+        WHERE checkoutrequestid = ?`,
+      [status, code, stk.ResultDesc || "", JSON.stringify(cb), checkoutID]
     );
 
     // If no record updated, notify
-    if (result.matchedCount === 0) {
+    if (result.affectedRows === 0) {
       console.warn("⚠️ No matching checkoutrequestid found:", checkoutID);
     }
 
