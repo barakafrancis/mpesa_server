@@ -35,7 +35,7 @@ export default async function handler(req, res) {
       CallBackURL:
         callbackUrl ||
         process.env.STK_CALLBACK_URL ||
-        "https://www.geniusapps.click/api/callback/stk",
+        "https://mpesa-server-eight.vercel.app/api/callback/stk",
       AccountReference: accountReference,
       TransactionDesc: transactionDesc
     };
